@@ -5,9 +5,9 @@ go 1.22.0
 toolchain go1.22.2
 
 require (
+	k8s.io/api v0.29.2
 	k8s.io/apimachinery v0.29.2
-	k8s.io/client-go v0.29.2
-	k8s.io/klog/v2 v2.120.1
+	kmodules.xyz/client-go v0.29.13
 	kubedb.dev/apimachinery v0.45.1
 	sigs.k8s.io/controller-runtime v0.17.2
 )
@@ -71,20 +71,21 @@ require (
 	gomodules.xyz/mergo v0.3.13 // indirect
 	gomodules.xyz/pointer v0.1.0 // indirect
 	gomodules.xyz/sets v0.2.1 // indirect
+	gomodules.xyz/sync v0.1.0 // indirect
 	gomodules.xyz/x v0.0.17 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	k8s.io/api v0.29.2 // indirect
 	k8s.io/apiextensions-apiserver v0.29.2 // indirect
 	k8s.io/apiserver v0.29.2 // indirect
+	k8s.io/client-go v0.29.2 // indirect
 	k8s.io/component-base v0.29.2 // indirect
+	k8s.io/klog/v2 v2.120.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20240228011516-70dd3763d340 // indirect
 	k8s.io/utils v0.0.0-20240102154912-e7106e64919e // indirect
 	kmodules.xyz/apiversion v0.2.0 // indirect
-	kmodules.xyz/client-go v0.29.13 // indirect
 	kmodules.xyz/custom-resources v0.29.1 // indirect
 	kmodules.xyz/monitoring-agent-api v0.29.0 // indirect
 	kmodules.xyz/objectstore-api v0.29.1 // indirect
