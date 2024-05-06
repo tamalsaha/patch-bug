@@ -3,11 +3,13 @@ package main
 import (
 	"context"
 	"fmt"
+	jsonpatch "gomodules.xyz/jsonpatch/v2"
 	apps "k8s.io/api/apps/v1"
 	core "k8s.io/api/core/v1"
 	policy "k8s.io/api/policy/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
+	"k8s.io/apimachinery/pkg/util/json"
 	"k8s.io/client-go/kubernetes"
 	core_util "kmodules.xyz/client-go/core/v1"
 	coreutil "kmodules.xyz/client-go/core/v1"
@@ -71,6 +73,7 @@ func main() {
 				{
 					Name:          "db",
 					ContainerPort: api.FerretDBDefaultPort,
+					Protocol:      core.ProtocolTCP, // fixes unnecessary patching
 				},
 			},
 			ImagePullPolicy: core.PullIfNotPresent,
@@ -105,6 +108,16 @@ func main() {
 		panic(err)
 	}
 	fmt.Println(string(data))
+
+	curJson, _ := json.Marshal(cur)
+	modJson, _ := json.Marshal(mod)
+	d2, err := jsonpatch.CreatePatch(curJson, modJson)
+	if err != nil {
+		panic(err)
+	}
+	d2Json, _ := json.Marshal(d2)
+	fmt.Println("---------------------------------")
+	fmt.Println(string(d2Json))
 }
 
 func main_() {
