@@ -24,11 +24,11 @@ import (
 	kerr "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/strategicpatch"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/klog/v2"
 	kutil "kmodules.xyz/client-go"
-	"github.com/evanphx/json-patch"
 )
 
 func CreateOrPatchPodDisruptionBudget(ctx context.Context, c kubernetes.Interface, meta metav1.ObjectMeta, transform func(*policy.PodDisruptionBudget) *policy.PodDisruptionBudget, opts metav1.PatchOptions) (*policy.PodDisruptionBudget, kutil.VerbType, error) {
@@ -67,7 +67,7 @@ func PatchPodDisruptionBudgetObject(ctx context.Context, c kubernetes.Interface,
 		return nil, kutil.VerbUnchanged, err
 	}
 
-	patch, err := jsonpatch.CreateMergePatch(curJson, modJson)
+	patch, err := strategicpatch.CreateTwoWayMergePatch(curJson, modJson, policy.PodDisruptionBudget{})
 	if err != nil {
 		return nil, kutil.VerbUnchanged, err
 	}
@@ -75,7 +75,7 @@ func PatchPodDisruptionBudgetObject(ctx context.Context, c kubernetes.Interface,
 		return cur, kutil.VerbUnchanged, nil
 	}
 	klog.V(3).Infof("Patching PodDisruptionBudget %s with %s.", cur.Name, string(patch))
-	out, err := c.PolicyV1().PodDisruptionBudgets(cur.Namespace).Patch(ctx, cur.Name, types.MergePatchType, patch, opts)
+	out, err := c.PolicyV1().PodDisruptionBudgets(cur.Namespace).Patch(ctx, cur.Name, types.StrategicMergePatchType, patch, opts)
 	return out, kutil.VerbPatched, err
 }
 
